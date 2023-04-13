@@ -26,7 +26,7 @@ import web.programming.flight_booking_api.exceptions.ArrivalNotFoundException;
 import web.programming.flight_booking_api.services.ArrivalService;
 
 @RestController
-@RequestMapping("/api/model2")
+@RequestMapping("/api/model")
 public class ArrivalController {
     @Autowired
     private final ArrivalService arrivalService;
@@ -37,7 +37,7 @@ public class ArrivalController {
         this.arrivalService = arrivalService;
         this.arrivalMapper = arrivalMapper;
     }
-    @GetMapping("/arrivals")
+    @GetMapping("/arrival")
     public ResponseEntity<List<ArrivalCreateDto>> getAllArrivals()
     {
         List<Arrival> arrivals = arrivalService.findAll();
@@ -49,7 +49,7 @@ public class ArrivalController {
             return ResponseEntity.ok(arrivalsDto);
         }
     }
-    @GetMapping("/arrivals/{id}")
+    @GetMapping("/arrival/{id}")
     public ResponseEntity<ArrivalCreateDto> getArrivalById(@PathVariable Long id)
     {
         ArrivalCreateDto data = arrivalService.find(id)
@@ -58,7 +58,7 @@ public class ArrivalController {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
-    @PostMapping("/arrivals")
+    @PostMapping("/arrival")
     public ResponseEntity<ArrivalCreateDto> createArrival(@RequestBody ArrivalDto arrivalDto)
     {
        Arrival arrival = arrivalMapper.toEntity(arrivalDto);
@@ -67,42 +67,21 @@ public class ArrivalController {
        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(arrivalCreated.getId()).toUri();
        return ResponseEntity.created(location).body(arrivalCreatedDto);
     }
-    @PutMapping("/arrivals/{id}")
+    @PutMapping("/arrival/{id}")
     public ResponseEntity<ArrivalCreateDto> updateArrival(@PathVariable Long id, @RequestBody ArrivalDto arrivalDto)
     {
-        Optional<Arrival> arrivalToUpdate = arrivalService.find(id);
-        
-        ArrivalCreateDto data = arrivalToUpdate
-                    .map(t -> arrivalMapper.toCreateDto(t))
-                    .orElseThrow(ArrivalNotFoundException::new);
-        if(arrivalToUpdate.isPresent())
-        {
-            Arrival arrival = arrivalMapper.toEntity(arrivalDto);
-            Optional<Arrival> arrivalUpdated = arrivalService.update(id,arrival);
-            ArrivalCreateDto arrivalUpdatedDto = arrivalMapper.toCreateDto(arrivalUpdated);
-            return ResponseEntity.status(HttpStatus.OK).body(arrivalUpdatedDto);
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        arrivalService.find(id).orElseThrow(ArrivalNotFoundException::new);
+        Arrival arrival = arrivalMapper.toEntity(arrivalDto);
+        Optional<Arrival> arrivalUpdated = arrivalService.update(id,arrival);
+        ArrivalCreateDto arrivalUpdatedDto = arrivalMapper.toCreateDto(arrivalUpdated);
+        return ResponseEntity.status(HttpStatus.OK).body(arrivalUpdatedDto);
     }
-    @DeleteMapping("/arrivals/{id}")
+    @DeleteMapping("/arrival/{id}")
     public ResponseEntity<Void> deleteArrival(@PathVariable Long id)
     {
-        Optional<Arrival> arrivalToDelete = arrivalService.find(id);
-        ArrivalCreateDto data = arrivalToDelete
-                    .map(t -> arrivalMapper.toCreateDto(t))
-                    .orElseThrow(ArrivalNotFoundException::new);
-        if(arrivalToDelete.isPresent())
-        {
-            arrivalService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        arrivalService.find(id).orElseThrow(ArrivalNotFoundException::new);
+        arrivalService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
     
     
