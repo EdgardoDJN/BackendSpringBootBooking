@@ -24,7 +24,7 @@ import web.programming.flight_booking_api.exceptions.UserNotFoundException;
 import web.programming.flight_booking_api.services.UserService;
 
 @RestController
-@RequestMapping("/api/model2")
+@RequestMapping("/api/model")
 public class UserController {
     @Autowired
     private final UserService userService;
@@ -34,7 +34,7 @@ public class UserController {
         this.userService = userService;
         this.userMapper = userMapper;
     }
-    @GetMapping("/users")
+    @GetMapping("/user")
     public ResponseEntity<List<UserCreateDto>> getAllUsers()
     {
         List<User> users = userService.findAll();
@@ -46,7 +46,7 @@ public class UserController {
             return ResponseEntity.ok(usersDto);
         }
     }
-    @GetMapping("/users/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserCreateDto> getUserById(@PathVariable Long id)
     {
             UserCreateDto data = userService.find(id)
@@ -55,7 +55,7 @@ public class UserController {
     
             return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
-    @PostMapping("/users")
+    @PostMapping("/user")
     public ResponseEntity<UserCreateDto> createUser(@RequestBody UserDto userDto)
     {
         User user = userMapper.toEntity(userDto);
@@ -66,40 +66,20 @@ public class UserController {
         else
             return ResponseEntity.status(HttpStatus.CREATED).body(userCreatedDto);
     }
-    @PutMapping("/users/{id}")
+    @PutMapping("/user/{id}")
     public ResponseEntity<UserCreateDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto)
     {
-        Optional<User> userToUpdate = userService.find(id);
-        UserCreateDto data = userToUpdate
-        .map(t -> userMapper.toCreateDto(t))
-        .orElseThrow(UserNotFoundException::new);
-        if(userToUpdate.isPresent())
-        {
-            User user = userMapper.toEntity(userDto);
-            Optional<User> userUpdated = userService.update(id, user);
-            UserCreateDto userUpdatedDto = userMapper.toCreateDto(userUpdated);
-            return ResponseEntity.status(HttpStatus.OK).body(userUpdatedDto);
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        userService.find(id).orElseThrow(UserNotFoundException::new);
+        User user = userMapper.toEntity(userDto);
+        Optional<User> userUpdated = userService.update(id, user);
+        UserCreateDto userUpdatedDto = userMapper.toCreateDto(userUpdated);
+        return ResponseEntity.status(HttpStatus.OK).body(userUpdatedDto);
     }
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<UserCreateDto> deleteUser(@PathVariable Long id)
     {
-        Optional<User> userToDelete = userService.find(id);
-        UserCreateDto data = userToDelete
-        .map(t -> userMapper.toCreateDto(t))
-        .orElseThrow(UserNotFoundException::new);
-        if(userToDelete.isPresent())
-        {
-            userService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        userService.find(id).orElseThrow(UserNotFoundException::new);
+        userService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

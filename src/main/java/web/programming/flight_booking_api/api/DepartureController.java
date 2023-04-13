@@ -25,7 +25,7 @@ import web.programming.flight_booking_api.exceptions.DepartureNotFoundException;
 import web.programming.flight_booking_api.services.DepartureService;
 
 @RestController
-@RequestMapping("/api/model2")
+@RequestMapping("/api/model")
 public class DepartureController {
     @Autowired
     private final DepartureService departureService;
@@ -35,7 +35,7 @@ public class DepartureController {
         this.departureService = departureService;
         this.departureMapper = departureMapper;
     }
-    @GetMapping("/departures")
+    @GetMapping("/departure")
     public ResponseEntity<List<DepartureCreateDto>> getAllDepartures()
     {
         List<Departure> departures = departureService.findAll();
@@ -47,7 +47,7 @@ public class DepartureController {
             return ResponseEntity.ok(departuresDto);
         }
     }
-    @GetMapping("/departures/{id}")
+    @GetMapping("/departure/{id}")
     public ResponseEntity<DepartureCreateDto> getDepartureById(@PathVariable Long id)
     {
         DepartureCreateDto data = departureService.find(id)
@@ -56,7 +56,7 @@ public class DepartureController {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
-    @PostMapping("/departures")
+    @PostMapping("/departure")
     public ResponseEntity<DepartureCreateDto> createDeparture(@RequestBody DepartureDto departureDto)
     {
         Departure departure = departureMapper.toEntity(departureDto);
@@ -67,41 +67,21 @@ public class DepartureController {
         else
             return ResponseEntity.status(HttpStatus.CREATED).body(departureCreatedDto);
     }
-    @PutMapping("/departures/{id}")
+    @PutMapping("/departure/{id}")
     public ResponseEntity<DepartureCreateDto> updateDeparture(@PathVariable Long id, @RequestBody DepartureDto departureDto)
     {
         Departure departure = departureMapper.toEntity(departureDto);
-        Optional<Departure> departureToUpdate = departureService.find(id);
-        DepartureCreateDto data = departureToUpdate
-                    .map(t -> departureMapper.toCreateDto(t))
-                    .orElseThrow(DepartureNotFoundException::new);
-        if(departureToUpdate.isPresent())
-        {
-            Optional<Departure> departureUpdated = departureService.update(id, departure);
-            DepartureCreateDto departureUpdatedDto = departureMapper.toCreateDto(departureUpdated);
-            return ResponseEntity.status(HttpStatus.OK).body(departureUpdatedDto);
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        departureService.find(id).orElseThrow(DepartureNotFoundException::new);
+        Optional<Departure> departureUpdated = departureService.update(id, departure);
+        DepartureCreateDto departureUpdatedDto = departureMapper.toCreateDto(departureUpdated);
+        return ResponseEntity.status(HttpStatus.OK).body(departureUpdatedDto);
     }
-    @DeleteMapping("/departures/{id}")
+    @DeleteMapping("/departure/{id}")
     public ResponseEntity<Void> deleteDeparture(@PathVariable Long id)
     {
-        Optional<Departure> departureToDelete = departureService.find(id);
-        DepartureCreateDto data = departureToDelete
-                    .map(t -> departureMapper.toCreateDto(t))
-                    .orElseThrow(DepartureNotFoundException::new);
-        if(departureToDelete.isPresent())
-        {
-            departureService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        departureService.find(id).orElseThrow(DepartureNotFoundException::new);
+        departureService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

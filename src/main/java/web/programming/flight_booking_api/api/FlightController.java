@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/api/model2")
+@RequestMapping("/api/model")
 public class FlightController {
     @Autowired
     private final FlightService flightService;
@@ -39,7 +39,7 @@ public class FlightController {
         this.flightService = flightService;
         this.flightMapper = flightMapper;
     }
-    @GetMapping("/flights")
+    @GetMapping("/flight")
     public ResponseEntity<List<FlightCreateDto>> FlightsSearch1(@RequestParam String departureAirportCode, @RequestParam String arrivalAirportCode, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate departureDate
     )
     {
@@ -51,8 +51,8 @@ public class FlightController {
             return ResponseEntity.status(HttpStatus.OK).body(flightsDto);
     }
 
-    @GetMapping("/flights/{id}")
-    public ResponseEntity<FlightCreateDto> getUserById(@PathVariable Long id)
+    @GetMapping("/flight1/{id}")
+    public ResponseEntity<FlightCreateDto> getFlightById(@PathVariable Long id)
     {
             FlightCreateDto data = flightService.find(id)
                         .map(t -> flightMapper.toCreateDto(t))
@@ -61,7 +61,7 @@ public class FlightController {
             return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
 
-    @GetMapping("/flights/{departureAirportCode}")
+    @GetMapping("/flight2/{departureAirportCode}")
     public ResponseEntity<List<FlightCreateDto>> FlightsSearch2(@PathVariable String departureAirportCode, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate departureDate
     )
     {
@@ -72,7 +72,7 @@ public class FlightController {
         else
             return ResponseEntity.status(HttpStatus.OK).body(flightsDto);
     }
-    @GetMapping("/flights2")
+    @GetMapping("/flight2")
     public ResponseEntity<List<FlightCreateDto>> FlightsSearch3()
     {
         List<Flight> flights = flightService.findAll();
@@ -82,7 +82,7 @@ public class FlightController {
         else
             return ResponseEntity.status(HttpStatus.OK).body(flightsDto);
     }
-    @PostMapping("/flights")
+    @PostMapping("/flight")
     public ResponseEntity<FlightCreateDto> createFlight(@RequestBody FlightDto flightDto)
     {
        Flight flight = flightMapper.toEntity(flightDto);
@@ -96,42 +96,22 @@ public class FlightController {
         }
 
     }
-    @PutMapping("/flights/{id}")
+    @PutMapping("/flight/{id}")
     public ResponseEntity<FlightCreateDto> updateFlight(@PathVariable Long id, @RequestBody FlightDto flightDto)
     {
-        Optional<Flight> flightToUpdate = flightService.find(id);
-        FlightCreateDto data = flightToUpdate
-                    .map(t -> flightMapper.toCreateDto(t))
-                    .orElseThrow(FlightNotFoundException::new);
-        if(flightToUpdate.isPresent())
-        {
-            Flight flight = flightMapper.toEntity(flightDto);
-            flight.setId(id);
-            Flight flightUpdated = flightService.update(id, flight).get();
-            FlightCreateDto flightUpdatedDto = flightMapper.toCreateDto(flightUpdated);
-            return ResponseEntity.status(HttpStatus.OK).body(flightUpdatedDto);
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        flightService.find(id).orElseThrow(FlightNotFoundException::new);
+        Flight flight = flightMapper.toEntity(flightDto);
+        Flight flightUpdated = flightService.update(id, flight).get();
+        FlightCreateDto flightUpdatedDto = flightMapper.toCreateDto(flightUpdated);
+        return ResponseEntity.status(HttpStatus.OK).body(flightUpdatedDto);
+        
     }
-    @DeleteMapping("/flights/{id}")
+    @DeleteMapping("/flight/{id}")
     public ResponseEntity<FlightCreateDto> deleteFlight(@PathVariable Long id)
     {
-        Optional<Flight> flightToDelete = flightService.find(id);
-        FlightCreateDto data = flightToDelete
-        .map(t -> flightMapper.toCreateDto(t))
-        .orElseThrow(FlightNotFoundException::new);
-        if(flightToDelete.isPresent())
-        {
-            flightService.delete(id);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        }
-        else
-        {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        flightService.find(id).orElseThrow(FlightNotFoundException::new);
+        flightService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
     
 }
