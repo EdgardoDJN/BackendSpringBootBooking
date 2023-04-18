@@ -22,7 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import web.programming.flight_booking_api.api.dto.FlightCreateDto;
 import web.programming.flight_booking_api.api.dto.FlightDto;
 import web.programming.flight_booking_api.api.dto.FlightMapper;
-import web.programming.flight_booking_api.entidades.Flight;
+import web.programming.flight_booking_api.entities.Flight;
 import web.programming.flight_booking_api.exceptions.FlightNotFoundException;
 import web.programming.flight_booking_api.services.FlightService;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,7 +39,7 @@ public class FlightController {
         this.flightService = flightService;
         this.flightMapper = flightMapper;
     }
-    @GetMapping("/flight")
+    @GetMapping("/flights")
     public ResponseEntity<List<FlightCreateDto>> FlightsSearch1(@RequestParam String departureAirportCode, @RequestParam String arrivalAirportCode, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate departureDate
     )
     {
@@ -51,7 +51,7 @@ public class FlightController {
             return ResponseEntity.status(HttpStatus.OK).body(flightsDto);
     }
 
-    @GetMapping("/flight1/{id}")
+    @GetMapping("/flights1/{id}")
     public ResponseEntity<FlightCreateDto> getFlightById(@PathVariable Long id)
     {
             FlightCreateDto data = flightService.find(id)
@@ -61,7 +61,7 @@ public class FlightController {
             return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
 
-    @GetMapping("/flight2/{departureAirportCode}")
+    @GetMapping("/flights2/{departureAirportCode}")
     public ResponseEntity<List<FlightCreateDto>> FlightsSearch2(@PathVariable String departureAirportCode, @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate departureDate
     )
     {
@@ -72,7 +72,7 @@ public class FlightController {
         else
             return ResponseEntity.status(HttpStatus.OK).body(flightsDto);
     }
-    @GetMapping("/flight2")
+    @GetMapping("/flights2")
     public ResponseEntity<List<FlightCreateDto>> FlightsSearch3()
     {
         List<Flight> flights = flightService.findAll();
@@ -82,21 +82,16 @@ public class FlightController {
         else
             return ResponseEntity.status(HttpStatus.OK).body(flightsDto);
     }
-    @PostMapping("/flight")
+    @PostMapping("/flights")
     public ResponseEntity<FlightCreateDto> createFlight(@RequestBody FlightDto flightDto)
     {
-       Flight flight = flightMapper.toEntity(flightDto);
-       Flight flightCreated = flightService.create(flight);
-       FlightCreateDto flightCreatedDto = flightMapper.toCreateDto(flightCreated);
-       if(flightCreated == null)
-           return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-       else{
-            URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(flightCreated.getId()).toUri();
-            return ResponseEntity.created(location).body(flightCreatedDto);
-        }
-
+        Flight flight = flightMapper.toEntity(flightDto);
+        Flight flightCreated = flightService.create(flight);
+        FlightCreateDto flightCreatedDto = flightMapper.toCreateDto(flightCreated);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(flightCreated.getId()).toUri();
+        return ResponseEntity.created(location).body(flightCreatedDto);
     }
-    @PutMapping("/flight/{id}")
+    @PutMapping("/flights/{id}")
     public ResponseEntity<FlightCreateDto> updateFlight(@PathVariable Long id, @RequestBody FlightDto flightDto)
     {
         flightService.find(id).orElseThrow(FlightNotFoundException::new);
@@ -106,7 +101,7 @@ public class FlightController {
         return ResponseEntity.status(HttpStatus.OK).body(flightUpdatedDto);
         
     }
-    @DeleteMapping("/flight/{id}")
+    @DeleteMapping("/flights/{id}")
     public ResponseEntity<FlightCreateDto> deleteFlight(@PathVariable Long id)
     {
         flightService.find(id).orElseThrow(FlightNotFoundException::new);

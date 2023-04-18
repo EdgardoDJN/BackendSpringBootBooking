@@ -1,5 +1,6 @@
 package web.programming.flight_booking_api.api;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,12 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import web.programming.flight_booking_api.api.dto.BookingCreateDto;
 import web.programming.flight_booking_api.api.dto.BookingDto;
 import web.programming.flight_booking_api.api.dto.BookingMapper;
-import web.programming.flight_booking_api.entidades.Booking;
-import web.programming.flight_booking_api.entidades.BookingStatus;
+import web.programming.flight_booking_api.entities.Booking;
+import web.programming.flight_booking_api.entities.BookingStatus;
 import web.programming.flight_booking_api.exceptions.BookingNotFoundException;
 import web.programming.flight_booking_api.services.BookingService;
 @RestController
@@ -33,7 +35,7 @@ public class BookingController {
         this.bookingService = bookingService;
         this.bookingMapper = bookingMapper;
     }
-    @GetMapping("/booking")
+    @GetMapping("/bookings")
     public ResponseEntity<List<BookingCreateDto>> getAllBookings( @RequestParam(required = false) String firstName,
     @RequestParam(required = false) String status)
     {
@@ -57,7 +59,7 @@ public class BookingController {
             return ResponseEntity.ok(bookingsDto);
         }
     }
-    @GetMapping("/booking/{id}")
+    @GetMapping("/bookings/{id}")
     public ResponseEntity<BookingCreateDto> getBookingById(@PathVariable Long id)
     {
         BookingCreateDto data = bookingService.find3(id)
@@ -66,21 +68,16 @@ public class BookingController {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
-    @PostMapping("/booking/flight/{flightId}/user/{userId}")
+    @PostMapping("/bookings/flight/{flightId}/user/{userId}")
     public ResponseEntity<BookingCreateDto> createBooking(@PathVariable Long flightId, @PathVariable Long userId, @RequestBody BookingDto bookingDto)
     {
         Booking booking1 = bookingMapper.toEntity(bookingDto);
         Booking booking2 = bookingService.create(flightId, userId,booking1);
         BookingCreateDto bookingCreatedDto = bookingMapper.toCreateDto(booking2);
-        if(booking2 == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(bookingCreatedDto);
-        else
-            return ResponseEntity.status(HttpStatus.CREATED).body(bookingCreatedDto);
-
-        //URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(booking2.getId()).toUri();
-        //return ResponseEntity.created(location).body(bookingCreatedDto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(booking2.getId()).toUri();
+        return ResponseEntity.created(location).body(bookingCreatedDto);
     }
-    @GetMapping("/booking/flight/{flightId}")
+    @GetMapping("/bookings/flight/{flightId}")
     public ResponseEntity<List<BookingCreateDto>> getBookingsByFlightId(@PathVariable Long flightId)
     {
         List<Booking> bookings = bookingService.find2(flightId);
@@ -92,7 +89,7 @@ public class BookingController {
             return ResponseEntity.ok(bookingsDto);
         }
     }
-    @DeleteMapping("/booking/{id}")
+    @DeleteMapping("/bookings/{id}")
     public ResponseEntity<BookingCreateDto> deleteBooking(@PathVariable Long id)
     {
         bookingService.find3(id).orElseThrow(BookingNotFoundException::new);

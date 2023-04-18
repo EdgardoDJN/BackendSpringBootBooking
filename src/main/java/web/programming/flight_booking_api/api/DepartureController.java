@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import web.programming.flight_booking_api.api.dto.DepartureCreateDto;
 import web.programming.flight_booking_api.api.dto.DepartureDto;
 import web.programming.flight_booking_api.api.dto.DepartureMapper;
-import web.programming.flight_booking_api.entidades.Departure;
+import web.programming.flight_booking_api.entities.Departure;
 import web.programming.flight_booking_api.exceptions.DepartureNotFoundException;
 import web.programming.flight_booking_api.services.DepartureService;
 
@@ -35,7 +35,7 @@ public class DepartureController {
         this.departureService = departureService;
         this.departureMapper = departureMapper;
     }
-    @GetMapping("/departure")
+    @GetMapping("/departures")
     public ResponseEntity<List<DepartureCreateDto>> getAllDepartures()
     {
         List<Departure> departures = departureService.findAll();
@@ -47,7 +47,7 @@ public class DepartureController {
             return ResponseEntity.ok(departuresDto);
         }
     }
-    @GetMapping("/departure/{id}")
+    @GetMapping("/departures/{id}")
     public ResponseEntity<DepartureCreateDto> getDepartureById(@PathVariable Long id)
     {
         DepartureCreateDto data = departureService.find(id)
@@ -56,18 +56,15 @@ public class DepartureController {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
-    @PostMapping("/departure")
+    @PostMapping("/departures")
     public ResponseEntity<DepartureCreateDto> createDeparture(@RequestBody DepartureDto departureDto)
     {
         Departure departure = departureMapper.toEntity(departureDto);
         Departure departureCreated = departureService.create(departure);
         DepartureCreateDto departureCreatedDto = departureMapper.toCreateDto(departureCreated);
-        if(departureCreatedDto == null)
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(departureCreatedDto);
-        else
-            return ResponseEntity.status(HttpStatus.CREATED).body(departureCreatedDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(departureCreatedDto);
     }
-    @PutMapping("/departure/{id}")
+    @PutMapping("/departures/{id}")
     public ResponseEntity<DepartureCreateDto> updateDeparture(@PathVariable Long id, @RequestBody DepartureDto departureDto)
     {
         Departure departure = departureMapper.toEntity(departureDto);
@@ -76,7 +73,7 @@ public class DepartureController {
         DepartureCreateDto departureUpdatedDto = departureMapper.toCreateDto(departureUpdated);
         return ResponseEntity.status(HttpStatus.OK).body(departureUpdatedDto);
     }
-    @DeleteMapping("/departure/{id}")
+    @DeleteMapping("/departures/{id}")
     public ResponseEntity<Void> deleteDeparture(@PathVariable Long id)
     {
         departureService.find(id).orElseThrow(DepartureNotFoundException::new);

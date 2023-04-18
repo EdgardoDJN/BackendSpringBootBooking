@@ -1,16 +1,14 @@
-package web.programming.flight_booking_api.entidades;
+package web.programming.flight_booking_api.entities;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -19,38 +17,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="bookings")
+@Table(name="arrivals")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Booking {
+public class Arrival {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private BookingStatus bookingStatus;
-
-    @ManyToOne
-    @JoinColumn(name = "flight_id")
-    private Flight flight;
-
     @Column(nullable = false)
-    private String paymentToken;
-
+    private LocalDate arrivalDate;
     @Column(nullable = false)
-    private Boolean checkedIn;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-    
+    private String arrivalAirportCode;
     @Column(nullable = false)
-    private LocalDate createdAt;
+    private String arrivalAirportName;
     @Column(nullable = false)
-    private String bookingReference;
+    private String arrivalCity;
     @Column(nullable = false)
-    private int reservedSeat;
-
+    private String arrivalLocale;
+    @OneToMany(mappedBy = "arrival")
+    private Set<Flight> flights;
 }

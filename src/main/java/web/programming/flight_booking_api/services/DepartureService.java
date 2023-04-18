@@ -3,7 +3,7 @@ package web.programming.flight_booking_api.services;
 import java.util.List;
 import java.util.Optional;
 
-import web.programming.flight_booking_api.entidades.Departure;
+import web.programming.flight_booking_api.entities.Departure;
 
 public interface DepartureService {
     Departure create(Departure departure);

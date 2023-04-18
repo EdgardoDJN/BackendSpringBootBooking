@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import web.programming.flight_booking_api.api.dto.UserCreateDto;
 import web.programming.flight_booking_api.api.dto.UserDto;
 import web.programming.flight_booking_api.api.dto.UserMapper;
-import web.programming.flight_booking_api.entidades.User;
+import web.programming.flight_booking_api.entities.User;
 import web.programming.flight_booking_api.exceptions.UserNotFoundException;
 import web.programming.flight_booking_api.services.UserService;
 
@@ -34,7 +34,7 @@ public class UserController {
         this.userService = userService;
         this.userMapper = userMapper;
     }
-    @GetMapping("/user")
+    @GetMapping("/users")
     public ResponseEntity<List<UserCreateDto>> getAllUsers()
     {
         List<User> users = userService.findAll();
@@ -46,7 +46,7 @@ public class UserController {
             return ResponseEntity.ok(usersDto);
         }
     }
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<UserCreateDto> getUserById(@PathVariable Long id)
     {
             UserCreateDto data = userService.find(id)
@@ -55,18 +55,15 @@ public class UserController {
     
             return ResponseEntity.status(HttpStatus.FOUND).body(data);
     }
-    @PostMapping("/user")
+    @PostMapping("/users")
     public ResponseEntity<UserCreateDto> createUser(@RequestBody UserDto userDto)
     {
         User user = userMapper.toEntity(userDto);
         User userCreated = userService.create(user);
         UserCreateDto userCreatedDto = userMapper.toCreateDto(userCreated);
-        if(userCreatedDto.equals(null))
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(userCreatedDto);
-        else
-            return ResponseEntity.status(HttpStatus.CREATED).body(userCreatedDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userCreatedDto);
     }
-    @PutMapping("/user/{id}")
+    @PutMapping("/users/{id}")
     public ResponseEntity<UserCreateDto> updateUser(@PathVariable Long id, @RequestBody UserDto userDto)
     {
         userService.find(id).orElseThrow(UserNotFoundException::new);
@@ -75,7 +72,7 @@ public class UserController {
         UserCreateDto userUpdatedDto = userMapper.toCreateDto(userUpdated);
         return ResponseEntity.status(HttpStatus.OK).body(userUpdatedDto);
     }
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<UserCreateDto> deleteUser(@PathVariable Long id)
     {
         userService.find(id).orElseThrow(UserNotFoundException::new);

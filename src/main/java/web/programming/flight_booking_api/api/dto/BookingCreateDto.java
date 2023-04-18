@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import web.programming.flight_booking_api.entidades.BookingStatus;
+import web.programming.flight_booking_api.entities.BookingStatus;
 
 @Data
 @AllArgsConstructor

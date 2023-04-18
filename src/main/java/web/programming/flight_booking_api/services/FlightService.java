@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import web.programming.flight_booking_api.entidades.Flight;
+import web.programming.flight_booking_api.entities.Flight;
 
 public interface FlightService {
     Flight create(Flight flight);
