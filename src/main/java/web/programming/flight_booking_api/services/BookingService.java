@@ -3,8 +3,8 @@ package web.programming.flight_booking_api.services;
 import java.util.List;
 import java.util.Optional;
 
-import web.programming.flight_booking_api.entidades.Booking;
-import web.programming.flight_booking_api.entidades.BookingStatus;
+import web.programming.flight_booking_api.entities.Booking;
+import web.programming.flight_booking_api.entities.BookingStatus;
 
 public interface BookingService {
     Booking create(Long idflight, Long iduser, Booking booking);

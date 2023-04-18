@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import web.programming.flight_booking_api.entidades.Arrival;
-import web.programming.flight_booking_api.entidades.Departure;
-import web.programming.flight_booking_api.entidades.Flight;
+import web.programming.flight_booking_api.entities.Arrival;
+import web.programming.flight_booking_api.entities.Departure;
+import web.programming.flight_booking_api.entities.Flight;
 
 @Component
 public class FlightMapper {

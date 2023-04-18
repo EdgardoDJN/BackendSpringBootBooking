@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import web.programming.flight_booking_api.entidades.Flight;
+import web.programming.flight_booking_api.entities.Flight;
 import web.programming.flight_booking_api.repositories.FlightRepository;
 
 @Service

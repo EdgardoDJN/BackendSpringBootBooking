@@ -1,4 +1,4 @@
-package web.programming.flight_booking_api.entidades;
+package web.programming.flight_booking_api.entities;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -17,29 +17,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="users")
+@Table(name="departures")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Departure {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(nullable = false)
-    private String firstName;
-    @Column(nullable = false)
-    private String lastName;
-    @Column(nullable = false)
-    private String userName;
-    @Column(nullable = false)
-    private String password;
-    @Column(nullable = false)
-    private LocalDate dateofbirth;
-    @Column(nullable = false)
-    private int phoneNumber;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Booking> bookings;
+    @Column(nullable = false)
+    private LocalDate departureDate;
+    @Column(nullable = false)
+    private String departureAirportCode;
+    @Column(nullable = false)
+    private String departureAirportName;
+    @Column(nullable = false)
+    private String departureCity;
+    @Column(nullable = false)
+    private String departureLocale;
+    @OneToMany(mappedBy = "departure")
+    private Set<Flight> flights;
 }

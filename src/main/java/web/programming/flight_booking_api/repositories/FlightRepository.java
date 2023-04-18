@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import web.programming.flight_booking_api.entidades.Flight;
+import web.programming.flight_booking_api.entities.Flight;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {

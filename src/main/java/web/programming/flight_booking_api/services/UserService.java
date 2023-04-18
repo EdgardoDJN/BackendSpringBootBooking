@@ -3,7 +3,7 @@ package web.programming.flight_booking_api.services;
 import java.util.List;
 import java.util.Optional;
 
-import web.programming.flight_booking_api.entidades.User;
+import web.programming.flight_booking_api.entities.User;
 
 public interface UserService {
     User create(User user);

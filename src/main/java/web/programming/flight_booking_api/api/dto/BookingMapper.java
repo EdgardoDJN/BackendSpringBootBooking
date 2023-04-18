@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import web.programming.flight_booking_api.entidades.Booking;
+import web.programming.flight_booking_api.entities.Booking;
 
 @Component
 public class BookingMapper {
