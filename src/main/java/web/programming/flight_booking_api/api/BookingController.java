@@ -27,6 +27,7 @@ import web.programming.flight_booking_api.services.BookingService;
 @RestController
 @RequestMapping("/api/model")
 public class BookingController {
+    /*
     @Autowired
     private final BookingService bookingService;
     @Autowired
@@ -90,12 +91,12 @@ public class BookingController {
         }
     }
     @DeleteMapping("/bookings/{id}")
-    public ResponseEntity<BookingCreateDto> deleteBooking(@PathVariable Long id)
+    public ResponseEntity<HttpStatus> deleteBooking(@PathVariable Long id)
     {
         bookingService.find3(id).orElseThrow(BookingNotFoundException::new);
         bookingService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
+    */
 
 }

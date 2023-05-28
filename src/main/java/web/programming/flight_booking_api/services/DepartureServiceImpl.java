@@ -27,6 +27,7 @@ public class DepartureServiceImpl implements DepartureService {
             departure.getDepartureAirportName(),
             departure.getDepartureCity(),
             departure.getDepartureLocale(),
+            departure.getDepartureTime(),
             null);
         return departureRepository.save(copy);
     }

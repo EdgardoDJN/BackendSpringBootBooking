@@ -8,7 +8,7 @@ import web.programming.flight_booking_api.entities.Booking;
 
 @Component
 public class BookingMapper {
-    public BookingDto toDto(Booking booking)
+    /*public BookingDto toDto(Booking booking)
     {
         BookingDto bookingDto = new BookingDto();
         bookingDto.setBookingStatus(booking.getBookingStatus());
@@ -56,8 +56,8 @@ public class BookingMapper {
         UserCreateDto userCreateDto = new UserCreateDto();
         userCreateDto.setId(booking.getUser().getId());
         userCreateDto.setFirstName(booking.getUser().getFirstName());
-        userCreateDto.setLastName(booking.getUser().getLastName());
-        userCreateDto.setUserName(booking.getUser().getUserName());
+        userCreateDto.setLastName(booking.getUser().getUsername());
+        userCreateDto.setUserName(booking.getUser().getEmail());
         userCreateDto.setPassword(booking.getUser().getPassword());
         userCreateDto.setDateofbirth(booking.getUser().getDateofbirth());
         userCreateDto.setPhoneNumber(booking.getUser().getPhoneNumber());
@@ -107,4 +107,5 @@ public class BookingMapper {
         bookingCreateDto.setFlight(flightCreateDto);
         return bookingCreateDto;
     }
+    */
 }

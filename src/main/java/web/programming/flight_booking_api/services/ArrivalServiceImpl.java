@@ -27,6 +27,7 @@ public class ArrivalServiceImpl implements ArrivalService {
             arrival.getArrivalAirportName(),
             arrival.getArrivalCity(),
             arrival.getArrivalLocale(),
+            arrival.getArrivalTime(),
             null);
         return arrivalRepository.save(copy);
     }
