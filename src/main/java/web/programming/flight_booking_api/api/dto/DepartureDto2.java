@@ -1,7 +1,5 @@
 package web.programming.flight_booking_api.api.dto;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,10 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartureDto {
-    private String departureDate;
-    private String departureAirportCode;
-    private String departureAirportName;
+public class DepartureDto2 {
+    private String departureTime;
     private String departureCity;
-    private String departureLocale;
 }

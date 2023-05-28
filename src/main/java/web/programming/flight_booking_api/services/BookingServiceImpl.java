@@ -50,10 +50,11 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.save(copy);
     }
 
-    @Override
+    /*@Override
     public List<Booking> find1(String firstName, BookingStatus bookingStatus) {
         return bookingRepository.findByCustomerfirstNameAndStatus(firstName, bookingStatus);
     }
+    */
 
     @Override
     public List<Booking> find2(Long flightId) {

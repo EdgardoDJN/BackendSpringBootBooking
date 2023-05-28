@@ -77,7 +77,7 @@ public class ArrivalController {
         return ResponseEntity.status(HttpStatus.OK).body(arrivalUpdatedDto);
     }
     @DeleteMapping("/arrivals/{id}")
-    public ResponseEntity<Void> deleteArrival(@PathVariable Long id)
+    public ResponseEntity<HttpStatus> deleteArrival(@PathVariable Long id)
     {
         arrivalService.find(id).orElseThrow(ArrivalNotFoundException::new);
         arrivalService.delete(id);

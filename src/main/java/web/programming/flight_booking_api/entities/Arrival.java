@@ -28,7 +28,7 @@ public class Arrival {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate arrivalDate;
+    private String arrivalDate;
     @Column(nullable = false)
     private String arrivalAirportCode;
     @Column(nullable = false)
@@ -37,6 +37,8 @@ public class Arrival {
     private String arrivalCity;
     @Column(nullable = false)
     private String arrivalLocale;
+    @Column(nullable = false)
+    private String arrivalTime;
     @OneToMany(mappedBy = "arrival")
     private Set<Flight> flights;
 }

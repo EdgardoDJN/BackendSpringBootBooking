@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ArrivalCreateDto {
     private Long id;
-    private LocalDate arrivalDate;
+    private String arrivalDate;
     private String arrivalAirportCode;
     private String arrivalAirportName;
     private String arrivalCity;

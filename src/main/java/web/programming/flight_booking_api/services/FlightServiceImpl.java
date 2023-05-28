@@ -53,7 +53,7 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public List<Flight> FlightsSearch1(String departureAirportCode, String arrivalAirportCode,
             LocalDate departureDate) {
-        return flightRepository.FlightsSearch(
+        return flightRepository.FlightsSearch1(
             departureAirportCode,
             arrivalAirportCode,
             departureDate
@@ -63,6 +63,11 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public List<Flight> FlightsSearch2(String departureAirportCode, LocalDate departureDate) {
         return flightRepository.flightsByAirportAndDate(departureAirportCode, departureDate);
+    }
+    @Override
+    public List<Flight> FlightsSearch3(String departureAirportName, String arrivalAirportName,
+            String departureDate) {
+        return flightRepository.FlightsSearch3(departureAirportName, arrivalAirportName, departureDate);
     }
     
     @Override

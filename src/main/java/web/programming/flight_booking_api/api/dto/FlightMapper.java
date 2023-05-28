@@ -1,5 +1,7 @@
 package web.programming.flight_booking_api.api.dto;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -130,10 +132,44 @@ public class FlightMapper {
 
         return dto;
     }
+    public FlightDto2 toDto2(Flight flight) {
+        FlightDto2 dto = new FlightDto2();
+        dto.setId(flight.getId());
+        dto.setTicketPrice(flight.getTicketPrice());
+        dto.setTicketCurrency(flight.getTicketCurrency());
+        dto.setFlightNumber(flight.getFlightNumber());
+
+        DepartureDto2 departureDto2 = new DepartureDto2();
+        departureDto2.setDepartureCity(flight.getDeparture().getDepartureCity());
+        departureDto2.setDepartureTime(flight.getDeparture().getDepartureTime());
+
+        ArrivalDto2 arrivalDto2 = new ArrivalDto2();
+        arrivalDto2.setArrivalCity(flight.getArrival().getArrivalCity());
+        arrivalDto2.setArrivalTime(flight.getArrival().getArrivalTime());
+
+        dto.setDeparture(departureDto2);
+        dto.setArrival(arrivalDto2);
+        // Calcular la duración y asignarla al DTO
+        LocalTime departureTime = LocalTime.parse(flight.getDeparture().getDepartureTime());
+        LocalTime arrivalTime = LocalTime.parse(flight.getArrival().getArrivalTime());
+        Duration duration = Duration.between(departureTime, arrivalTime);
+        dto.setDuration(formatDuration(duration));
+        return dto;
+    }
+    public String formatDuration(Duration duration)
+    {
+        long hours = duration.toHours();
+        long minutes = duration.toMinutesPart();
+        return hours + "h" + minutes + "m";
+    }
     public List<FlightCreateDto> tCreateDto(List<Flight> flights)
     {
         List<FlightCreateDto> flightCreateDtos = flights.stream().map(this::toCreateDto).collect(Collectors.toList());
         return flightCreateDtos;
     }
-
+    public List<FlightDto2> toDto2(List<Flight> flights)
+    {
+        List<FlightDto2> flightDtos = flights.stream().map(this::toDto2).collect(Collectors.toList());
+        return flightDtos;
+    }
 }

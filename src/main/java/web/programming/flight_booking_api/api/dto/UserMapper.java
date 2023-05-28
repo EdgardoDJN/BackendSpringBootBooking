@@ -9,7 +9,7 @@ import web.programming.flight_booking_api.entities.User;
 @Component
 public class UserMapper {
     //Pasar de una forma a otra forma
-    public UserDto toDto(User user)
+    /*public UserDto toDto(User user)
     {
         UserDto userDto = new UserDto();
         userDto.setFirstName(user.getFirstName());
@@ -67,5 +67,6 @@ public class UserMapper {
         return userCreateDto;
     }
     //Faltan los dos de UserBookingDto
+    */
     
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DepartureCreateDto {
     private Long id;
-    private LocalDate departureDate;
+    private String departureDate;
     private String departureAirportCode;
     private String departureAirportName;
     private String departureCity;

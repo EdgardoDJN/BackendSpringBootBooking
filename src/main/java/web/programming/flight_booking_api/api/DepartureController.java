@@ -74,7 +74,7 @@ public class DepartureController {
         return ResponseEntity.status(HttpStatus.OK).body(departureUpdatedDto);
     }
     @DeleteMapping("/departures/{id}")
-    public ResponseEntity<Void> deleteDeparture(@PathVariable Long id)
+    public ResponseEntity<HttpStatus> deleteDeparture(@PathVariable Long id)
     {
         departureService.find(id).orElseThrow(DepartureNotFoundException::new);
         departureService.delete(id);

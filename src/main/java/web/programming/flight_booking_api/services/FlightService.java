@@ -12,6 +12,7 @@ public interface FlightService {
     List<Flight> findAll();
     List<Flight> FlightsSearch1(String departureAirportCode, String arrivalAirportCode, LocalDate departureDate);
     List<Flight> FlightsSearch2(String departureAirportCode, LocalDate departureDate);
+    List<Flight> FlightsSearch3(String departureAirportName, String arrivalAirportName, String departureDate);
     Optional<Flight> find(Long id);
     void delete(Long id);
 }

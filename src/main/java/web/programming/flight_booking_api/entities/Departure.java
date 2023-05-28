@@ -28,7 +28,7 @@ public class Departure {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDate departureDate;
+    private String departureDate;
     @Column(nullable = false)
     private String departureAirportCode;
     @Column(nullable = false)
@@ -37,6 +37,8 @@ public class Departure {
     private String departureCity;
     @Column(nullable = false)
     private String departureLocale;
+    @Column(nullable = false)
+    private String departureTime;
     @OneToMany(mappedBy = "departure")
     private Set<Flight> flights;
 }
