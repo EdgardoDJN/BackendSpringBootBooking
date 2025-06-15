@@ -26,6 +26,7 @@ public class ArrivalMapper {
         arrival.setArrivalAirportName(arrivalDto.getArrivalAirportName());
         arrival.setArrivalCity(arrivalDto.getArrivalCity());
         arrival.setArrivalLocale(arrivalDto.getArrivalLocale());
+        arrival.setArrivalTime(arrivalDto.getArrivalTime());
         return arrival;
     }
     public ArrivalCreateDto toCreateDto(Arrival arrival)

@@ -26,6 +26,7 @@ public class DepartureMapper {
         departure.setDepartureAirportName(departureDto.getDepartureAirportName());
         departure.setDepartureCity(departureDto.getDepartureCity());
         departure.setDepartureLocale(departureDto.getDepartureLocale());
+        departure.setDepartureTime(departureDto.getDepartureTime());
         return departure;
     }
     public DepartureCreateDto toCreateDto(Departure departure)
