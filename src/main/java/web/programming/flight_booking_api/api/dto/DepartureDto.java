@@ -15,4 +15,5 @@ public class DepartureDto {
     private String departureAirportName;
     private String departureCity;
     private String departureLocale;
+    private String departureTime;
 }

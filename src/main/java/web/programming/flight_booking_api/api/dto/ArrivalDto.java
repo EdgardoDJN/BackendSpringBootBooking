@@ -16,4 +16,6 @@ public class ArrivalDto {
     private String arrivalAirportName;
     private String arrivalCity;
     private String arrivalLocale;
+    private String arrivalTime;
+
 }
